@@ -1,0 +1,10 @@
+[package]
+name = "msh"
+version = "1.0.0"
+edition = "2024"
+authors = ["itsgerliz"]
+description = "Minimalist shell written in Rust to use with vitalux"
+readme = "README.md"
+license-file = "LICENSE"
+
+[dependencies]

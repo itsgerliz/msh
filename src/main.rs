@@ -51,9 +51,15 @@ fn main() {
 		stdin_handler.read_line(&mut user_input).unwrap();
 
 		// Check if the user wants to exit the shell
-		if user_input.trim() == "!exit" {
+		if user_input.as_str().trim() == "!exit" {
 			println!("msh - Ending session...");
 			exit(0);
+		}
+
+		// Check no input
+		if user_input.as_str().trim().is_empty() {
+			last_exit_code = -1;
+			continue;
 		}
 
 		// Tokenize the user input and push them into the C-style strings vector
@@ -76,9 +82,9 @@ fn main() {
 		// Fork OK - child side
 		} else if fork_result == 0 {
 			// Try to subsitute this routine to the new process
-			let execv_result = unsafe { libc::execv(user_command_c_raw_ptr[0] as *const c_char, user_command_c_raw_ptr.as_ptr() as *const *const c_char) };
+			let execvp_result = unsafe { libc::execvp(user_command_c_raw_ptr[0] as *const c_char, user_command_c_raw_ptr.as_ptr() as *const *const c_char) };
 			// If nothing fails code beyond here will not execute
-			if execv_result == -1 {
+			if execvp_result == -1 {
 				exit(250);
 			}
 		// Fork OK - parent side
